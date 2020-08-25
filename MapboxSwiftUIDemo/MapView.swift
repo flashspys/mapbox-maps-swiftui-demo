@@ -9,6 +9,15 @@ extension MGLPointAnnotation {
     }
 }
 
+class CustomAnnotationView: MGLAnnotationView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = bounds.width / 2
+        layer.borderWidth = 2
+        layer.borderColor = UIColor.red.cgColor
+    }
+}
+
 struct MapView: UIViewRepresentable {
     @Binding var annotations: [MGLPointAnnotation]
     
@@ -85,7 +94,9 @@ struct MapView: UIViewRepresentable {
         }
         
         func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
-            return nil
+            let view = CustomAnnotationView(annotation: annotation, reuseIdentifier: "foo")
+            view.frame = CGRect(origin: .zero, size: CGSize(width: 15, height: 15))
+            return view
         }
          
         func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
